@@ -75,4 +75,4 @@ class Room:
             try:
                 return self.convertToFahrenheit(flair.attributes.get('current-temperature-c'))
             except Exception:
-                logger.exception("Exception Occurred when trying to convert temperature to Fahrenheit")
+                logger.warning("Exception Occurred when trying to convert temperature to Fahrenheit")
