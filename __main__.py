@@ -103,37 +103,45 @@ logger.addHandler(logHandler)
 while True:
     logger.info("Running Cycle To Check System")
     house = initialize(client_id, client_secret)
-    logger.debug("House Season: "+house.season)
-    logger.debug("House Fan State: "+house.fanStatus)
-    logger.debug("House HVAC State: " +house.hvacStatus)
+    logger.debug("House Season: "+ house.season)
+    logger.debug("House Fan State: "+ house.fanStatus)
+    logger.debug("House HVAC State: " + house.hvacStatus)
     if house.season == 'cool' and house.hvacStatus == 'cool':
         logger.info('Cooling')
         for room in house.downstairs:
+            ventStatus = room.ventStatus()
             if room.isDesiredTemperatureReached() and not room.isCoolException():
                 logger.debug("Closing Vent For Room: " + room.name)
+                logger.info("Vent is Percentage is {0}%".format(ventStatus))
                 logger.debug("Room Temperature: {:.2f} F".format(room.temperature))
                 logger.debug("Room Desired Temperature: {:.2f} F".format(room.desiredTemperature))
                 room.closeVent()
             else:
                 logger.debug("Opening Vent For Room: " + room.name)
+                logger.info("Vent is Percentage is {0}%".format(ventStatus))
                 logger.debug("Room Temperature: {:.2f} F".format(room.temperature))
                 logger.debug("Room Desired Temperature: {:.2f} F".format(room.desiredTemperature))
                 room.openVent()
         for room in house.upstairs:
+            ventStatus = room.ventStatus()
             logger.debug("Opening Vent For Room: " + room.name)
+            logger.info("Vent is Percentage is {0}%".format(ventStatus))
             logger.debug("Room Temperature: {:.2f} F".format(room.temperature))
             logger.debug("Room Desired Temperature: {:.2f} F".format(room.desiredTemperature))
             room.openVent()
     elif house.season == 'heat' and house.hvacStatus == 'heat':
         logger.info('Heating')
         for room in house.rooms:
+            ventStatus = room.ventStatus()
             if room.isDesiredTemperatureReached() and not room.isHeatException():
                 logger.debug("Closing Vent For Room: "+room.name)
+                logger.info("Vent is Percentage is {0}%".format(ventStatus))
                 logger.debug("Room Temperature: {:.2f} F".format(room.temperature))
                 logger.debug("Room Desired Temperature: {:.2f} F".format(room.desiredTemperature))
                 room.closeVent()
             else:
                 logger.debug("Opening Vent For Room: " + room.name)
+                logger.info("Vent is Percentage is {0}%".format(ventStatus))
                 logger.debug("Room Temperature: {:.2f} F".format(room.temperature))
                 logger.debug("Room Desired Temperature: {:.2f} F".format(room.desiredTemperature))
                 room.openVent()

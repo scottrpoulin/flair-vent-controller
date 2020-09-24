@@ -21,16 +21,21 @@ class Room:
         self.vent = vent
 
     def openVent(self, percentage=100):
-        if self.vent is not None and self.vent.attributes.get('percent-open') != percentage:
+        percentageOpen = self.ventStatus()
+        if self.vent is not None and percentageOpen != percentage:
             self.vent.update(attributes={'percent-open': percentage})
         else:
             logger.debug("Can't Open Vent due to Vent Doesn't Exist or Vent is Already Open")
 
     def closeVent(self, percentage=0):
-        if self.vent is not None and self.vent.attributes.get('percent-open') != percentage:
+        percentageOpen = self.ventStatus()
+        if self.vent is not None and percentageOpen != percentage:
             self.vent.update(attributes={'percent-open': percentage})
         else:
             logger.debug("Can't Close Vent due to Vent Doesn't Exist or Vent is Already Closed")
+
+    def ventStatus(self):
+        return self.vent.attributes.get('percent-open')
 
     def convertToFahrenheit(self, temp):
         return (temp * (9 / 5)) + 32
@@ -75,4 +80,4 @@ class Room:
             try:
                 return self.convertToFahrenheit(flair.attributes.get('current-temperature-c'))
             except Exception:
-                logger.warning("Exception Occurred when trying to convert temperature to Fahrenheit")
+                logger.exception("Exception Occurred when trying to convert temperature to Fahrenheit")
