@@ -1,4 +1,5 @@
 import logging
+logger = logging.getLogger('flair_app')
 
 
 class Room:
@@ -20,16 +21,16 @@ class Room:
         self.vent = vent
 
     def openVent(self, percentage=100):
-        if self.vent is not None:
+        if self.vent is not None and self.vent.attributes.get('percent-open') != percentage:
             self.vent.update(attributes={'percent-open': percentage})
         else:
-            logging.debug("Can't Open Vent due to Vent Doesn't Exist")
+            logger.debug("Can't Open Vent due to Vent Doesn't Exist or Vent is Already Open")
 
     def closeVent(self, percentage=0):
-        if self.vent is not None:
+        if self.vent is not None and self.vent.attributes.get('percent-open') != percentage:
             self.vent.update(attributes={'percent-open': percentage})
         else:
-            logging.debug("Can't Close Vent due to Vent Doesn't Exist")
+            logger.debug("Can't Close Vent due to Vent Doesn't Exist or Vent is Already Closed")
 
     def convertToFahrenheit(self, temp):
         return (temp * (9 / 5)) + 32
@@ -47,7 +48,7 @@ class Room:
             return False
 
     def isDesiredTemperatureReached(self):
-        return self.desiredTemperature <= self.temperature
+        return self.desiredTemperature >= self.temperature
 
     def isHeatException(self):
         return self.heatException
@@ -71,4 +72,7 @@ class Room:
         if flair is None:
             return currentTemperature
         else:
-            return self.convertToFahrenheit(flair.attributes.get('current-temperature-c'))
+            try:
+                return self.convertToFahrenheit(flair.attributes.get('current-temperature-c'))
+            except Exception:
+                logger.exception("Exception Occurred when trying to convert temperature to Fahrenheit")
