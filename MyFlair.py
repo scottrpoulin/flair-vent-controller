@@ -16,3 +16,6 @@ class MyFlair:
 
     def getThermostatOperatingState(self):
         return self.client.get('thermostat-states').resources[0].attributes.get('operating-state')
+
+    def getDesiredTemperature(self):
+        return self.client.get('structures').resources[0].attributes.get('set-point-temperature-c')

@@ -15,20 +15,27 @@ def initialize(client_id, client_secret):
     myflair = MyFlair(client_id, client_secret)
     equipmentStatus = myflair.getThermostatOperatingState()
     hvacMode = myflair.getHvacMode()
+    desiredTemp = myflair.getDesiredTemperature()
 
     masterBedRoom = Room(flair=myflair.getRoom(constant.MASTER_BEDROOM_ID),
                          location=constant.UPSTAIRS,
+                         season=hvacMode,
+                         desiredTemperature=desiredTemp,
                          heatException=False,
                          coolException=False)
 
     upstairs2ndBedroom = Room(flair=myflair.getRoom(constant.UPSTAIRS_SECOND_ID),
                               location=constant.UPSTAIRS,
+                              season=hvacMode,
+                              desiredTemperature=desiredTemp,
                               heatException=False,
                               coolException=False)
 
     livingRoom = Room(flair=myflair.getRoom(constant.LIVING_ROOM_ID),
                       location=constant.UPSTAIRS,
                       vent=myflair.getRoomVent(constant.LIVING_ROOM_VENT),
+                      season=hvacMode,
+                      desiredTemperature=desiredTemp,
                       heatException=False,
                       coolException=True)
 
@@ -36,12 +43,16 @@ def initialize(client_id, client_secret):
                    name='Kitchen',
                    location=constant.UPSTAIRS,
                    vent=myflair.getRoomVent(constant.KITCHEN_VENT),
+                   season=hvacMode,
+                   desiredTemperature=desiredTemp,
                    heatException=False,
                    coolException=True)
 
     foyer = Room(flair=myflair.getRoom(constant.FOYER_ID),
                  name='Foyer', location=constant.UPSTAIRS,
                  vent=myflair.getRoomVent(constant.FOYER_VENT),
+                 season=hvacMode,
+                 desiredTemperature=desiredTemp,
                  heatException=False,
                  coolException=True)
 
@@ -49,30 +60,40 @@ def initialize(client_id, client_secret):
                   name='Office',
                   location=constant.UPSTAIRS,
                   vent=myflair.getRoomVent(constant.OFFICE_VENT),
+                  season=hvacMode,
+                  desiredTemperature=desiredTemp,
                   heatException=True,
                   coolException=True)
 
     downstairsBarAndGameRoom = Room(flair=myflair.getRoom(constant.GAME_ROOM_ID),
                                     location=constant.DOWNSTAIRS,
                                     vent=myflair.getRoomVent(constant.GAME_ROOM_VENT),
+                                    season=hvacMode,
+                                    desiredTemperature=desiredTemp,
                                     heatException=False,
                                     coolException=False)
 
     downstairsMainRoom = Room(flair=myflair.getRoom(constant.DOWNSTAIRS_MAIN_ID),
                               location=constant.DOWNSTAIRS,
                               vent=myflair.getRoomVent(constant.DOWNSTAIRS_MAIN_VENT),
+                              season=hvacMode,
+                              desiredTemperature=desiredTemp,
                               heatException=True,
                               coolException=True)
 
     downstairs2ndBedroom = Room(flair=myflair.getRoom(constant.DOWNSTAIRS_SECOND_ID),
                                 location=constant.DOWNSTAIRS,
                                 vent=myflair.getRoomVent(constant.DOWNSTAIRS_SECOND_VENT),
+                                season=hvacMode,
+                                desiredTemperature=desiredTemp,
                                 heatException=True,
                                 coolException=False)
 
     workoutRoom = Room(flair=myflair.getRoom(constant.DOWNSTAIRS_SECOND_ID),
                        name='Workout Room', location=constant.DOWNSTAIRS,
                        vent=myflair.getRoomVent(constant.WORKOUT_ROOM_VENT),
+                       season=hvacMode,
+                       desiredTemperature=desiredTemp,
                        heatException=True,
                        coolException=False)
 
